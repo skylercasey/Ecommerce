@@ -4,7 +4,6 @@
 <head>
 	<title>{%block title%}My shop{%endblock%} </title>
 	<style type="text/css">
-/*@import url(http://fonts.googleapis.com/css?family=Ubuntu);*/
 
 body { 
     margin:0;
@@ -83,7 +82,7 @@ table.cart img {
 }
 
 tbody td.num {
-    text-align:right;
+    text-align:left;
 }
 
 td input[type="submit"] {
@@ -339,10 +338,19 @@ form div.field {
 </head>
 <body>
 	<div id="header">
-		<a href="" class="logo">MY SHOP</a>
+		<a href="{% url 'shop:product_list' %}" class="logo">MY SHOP</a>
 	</div>
 	<div id="subheader">
-		<div class="cart"> Your cart is Empty</div>
+		<div class="cart">{%with total_items=cart|length%}
+            {%if cart|length > 0 %}
+                your cart:
+                <a href="{% url 'cart:cart_detail' %}">{{total_items}} item{{total_items|pluralize}}, ${{cart.get_total_price}}</a>
+                {%else%}
+                Your cart is empty.
+                {%endif%}
+            {%endwith%}
+
+        </div>
 	</div>
 	<div id="content"> {%block content%}{%endblock%}</div>
 
